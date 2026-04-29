@@ -1,0 +1,22 @@
+@baseUrl = http://localhost:5045
+
+### Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "Admin@123"
+}
+
+### Me
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### Departments
+GET {{baseUrl}}/api/departments
+Authorization: Bearer {{token}}
+
+### Debug claims
+GET {{baseUrl}}/api/debug/claims
+Authorization: Bearer {{token}}
