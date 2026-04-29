@@ -2,7 +2,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using SystemManagement.Application.Common.Security;
 using SystemManagement.Domain.Constants;
 using SystemManagement.Infrastructure;
@@ -97,25 +97,20 @@ builder.Services.AddSwaggerGen(options =>
         Description = ".NET 10 Clean Architecture API with JWT, hierarchical roles, department groups, task assignment, file attachments, SignalR notifications and ready-to-run migrations"
     });
 
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    const string securityScheme = "Bearer";
+    options.AddSecurityDefinition(securityScheme, new OpenApiSecurityScheme
     {
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
+        Scheme = securityScheme,
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
         Description = "Paste raw JWT token here. Do not prefix with Bearer."
     });
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
     {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            },
-            Array.Empty<string>()
-        }
+        [new OpenApiSecuritySchemeReference(securityScheme, document)] = new List<string>()
     });
 });
 
